@@ -10,6 +10,7 @@ import Orders from './pages/Orders.jsx'
 import PlaceOrder from './pages/PlaceOrder.jsx'
 import Product from './pages/Product.jsx'
 import Navbar from './components/Navbar.jsx'
+import Footer from './components/Footer.jsx'
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path='/place-order' element={<PlaceOrder/>} />
         <Route path='/product/:productId' element={<Product/>} />
       </Routes>
+      <Footer/>
     </div>
   )
 }

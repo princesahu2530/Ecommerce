@@ -6,7 +6,8 @@ import ProductItem from './ProductItem';
 const BestSeller = () => {
 
     const { products } = useContext(ShopContext);
-        // console.log('products:', products);
+       
+    // console.log('products:', products);
     const [bestSeller, setBestSeller]= useState([]);
 
     useEffect(() => {
