@@ -137,7 +137,7 @@ const Add = ({token}) => {
         <input onChange={()=>setBestSeller(prev => !prev)} checked={bestSeller} type="checkbox" id='bestSeller' />
         <label className='cursor-pointer' htmlFor="bestSeller">Add to bestSeller</label>
       </div>
-      <button type='submit' className='w-28 py-3 mt-4 bg-black text-white'>ADD</button>
+      <button type='submit' className='w-28 py-3 mt-4 bg-black text-white active:bg-white active:text-black'>ADD</button>
     </form>
   )
 }
