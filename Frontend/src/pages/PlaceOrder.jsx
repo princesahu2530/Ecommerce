@@ -61,7 +61,7 @@ const PlaceOrder = () => {
         // api calls for COD
         case 'cod':
           const response = await axios.post(backendUrl + '/api/order/place',orderData,{headers:{token}})
-          console.log(response.data.success);
+          // console.log(response.data.success);
           
           if(response.data.success){
             setCartItems({})
@@ -70,7 +70,18 @@ const PlaceOrder = () => {
             toast.error(response.data.message)
           }
           break;
-        
+        case 'stripe':
+
+            const responseStripe = await axios.post(backendUrl + '/api/order/stripe', orderData,{headers:{token}})
+            if (responseStripe.data.success) {
+                const { session_url } = responseStripe.data;
+                window.location.replace(session_url);
+            } else {
+                toast.error(responseStripe.data.message);
+            }
+            
+              break;
+            
         default:
           break;
       }
