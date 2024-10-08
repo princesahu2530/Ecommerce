@@ -32,6 +32,40 @@ const PlaceOrder = () => {
 
   }
 
+  const initPay = (order) => {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Ensure this is defined in your .env file
+      amount: order.amount * 100, // converting to paise (Razorpay works in paise)
+      currency: order.currency,
+      name: 'Your Store Name', // Replace with your store name
+      description: 'Test Transaction', // Adjust description as needed
+      order_id: order.id, // Razorpay order ID
+      receipt: order.receipt, // Receipt from backend
+      handler: async (response) => {
+        console.log(response);
+        try {
+          const {data} = await axios.post(backendUrl + '/api/order/verifyRazorpay', response, {headers:{token}})
+          if(data.success){
+            navigate('/orders')
+            setCartItems({})
+          }
+        } catch (error) {
+          console.log(error);
+          toast.error(error)
+          
+        }
+      },
+    };
+  
+    // Check if Razorpay is loaded before creating the instance
+    if (window.Razorpay) {
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } else {
+      toast.error('Razorpay SDK failed to load. Please try again later.');
+    }
+  };
+
   const onSubmitHandler = async (event)=>{
     event.preventDefault()
     try {
@@ -81,6 +115,18 @@ const PlaceOrder = () => {
             }
             
               break;
+
+              case 'razorpay':
+                
+                // Make API call to create Razorpay order
+                const responseRazorpay = await axios.post(backendUrl + '/api/order/razorpay', orderData, {headers: {token}})
+                
+                if (responseRazorpay.data.success) {
+                  // Initiate Razorpay payment using the order details from backend
+                  initPay(responseRazorpay.data.order);
+                }  
+                break;
+              
             
         default:
           break;
